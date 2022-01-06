@@ -24,7 +24,21 @@ public class ElevensBoard extends Board {
     // returns true if **any** two of the given cards adds up to exactly 11
     // and false otherwise
     public boolean containsPairSum11(ArrayList<Integer> cardIndexes) {
-        // YOUR CODE HERE
+
+        for (int i = 0; i < cardIndexes.size(); i++){
+            for (int j = 0; j < cardIndexes.size(); j++){
+                int ish = cardIndexes.get(i);
+                int jish = cardIndexes.get(j);
+                if (cardAt(jish).getPointValue() + cardAt(ish).getPointValue() == 11){
+                    return true;
+                }
+            }
+
+
+
+        }
+
+
         return false;
     }
 
@@ -32,8 +46,27 @@ public class ElevensBoard extends Board {
     // returns true if there is at least 1 Jack, at least 1 Queen, and at least 1 King
     // amongst the selected cards, and false otherwise
     public boolean containsJQK(ArrayList<Integer> cardIndexes) {
-        // YOUR CODE HERE
-        return false;
+        int jcount = 0;
+        int qcount = 0;
+        int kcount = 0;
+        for(int i = 0; i < cardIndexes.size(); i++){
+            if (cardAt(cardIndexes.get(i)).getRank().equals("jack")){
+                jcount++;
+            }
+            else if (cardAt(cardIndexes.get(i)).getRank().equals("queen")){
+                qcount++;
+            }
+            else if (cardAt(cardIndexes.get(i)).getRank().equals("king")){
+                kcount++;
+            }
+        }
+        if (kcount == 1 && jcount == 1 && qcount == 1){
+            return true;
+        }
+        else{
+            return false;
+        }
+
     }
 
     // Determine if there are any legal plays left on the board.
@@ -45,8 +78,10 @@ public class ElevensBoard extends Board {
         // allCards is a list of the indexes of all cards on the board
         ArrayList<Integer> allCards = getAllCardIndexes();
 
-        // YOUR CODE HERE
-        // Just 1-2 lines of code needed
+        if (containsPairSum11(allCards) || containsJQK(allCards)){
+            return true;
+        }
+
         return false;
     }
 
@@ -55,7 +90,14 @@ public class ElevensBoard extends Board {
     // (2) a group of three cards consisting of a jack, a queen, and a king in some order
     @Override
     public boolean isLegal(ArrayList<Integer> selectedCards) {
-        // YOUR CODE HERE
+
+        if(containsPairSum11(selectedCards) && selectedCards.size() == 2){
+            return true;
+        }
+        else if(containsJQK(selectedCards) && selectedCards.size() == 3){
+            return true;
+        }
+
         return false;
     }
 }
